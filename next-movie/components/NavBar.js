@@ -1,14 +1,15 @@
 'use client'
 import Link from 'next/link';
-// link는 client side navigation을 제공
-// 그냥 a href만 쓰면 전체페이지를 다 렌더링해서 속도가 느려짐
-import { usePathname, useRouter } from 'next/navigation';
-// next/router 사용되지 않음 -> navigation으로 변경 
+import { usePathname, useRouter } from 'next/navigation'; 
+import styles from './NavBar.module.css';
 
 export default function NavBar() {
     const pathname = usePathname();
     return (
-        <nav>
+        // css modules 적용하기
+        // 실제 브라우저 class name 에선 NarBar_nav__0Bjy이런식으로 무작위로 생성되기때문에 충돌 발생하지 않음
+        // 다른곳에서도 nav라는 class명 쓸수 있는것 
+        <nav className={styles.nav}> 
             <Link style={{color: pathname === "/" ? "red" : "blue" }} href="/">
                 Home
             </Link>
@@ -16,9 +17,5 @@ export default function NavBar() {
                 About
             </Link>
         </nav>
-        // <nav>
-        //     <a href="/">Home</a>
-        //     <a href="/about">About</a>
-        // </nav>
     );
 }
