@@ -1,20 +1,30 @@
 'use client'
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation'; 
-import styles from './NavBar.module.css';
 
 export default function NavBar() {
     const pathname = usePathname();
+    // styles jsx로 작업하더라도 각 style 들은 유니크 값을 가지기때문에 같은 h1태그 등을 쓰더라도 다른 파일의 css에 간섭받지 않음
+    // 결국 스타일의 적용범위를 해당 컴포넌트 내부로 한정하는 것
     return (
         <nav> 
-            {/* 문자열 만들어서 여러 css 먹이기 */}
-            <Link className={`${styles.link} ${pathname === "/" ? styles.active : "" }`} href="/">
-                Home
+            <Link href="/">
+                <span className={pathname === "/" ? "active" : ""}>Home</span>
             </Link>
-            {/* 배열 만들어서 여러 css 먹이기 */}
-            <Link className={[styles.link, pathname === "/about"? styles.active : "" ].join(' ')} href="/about">
-                About
+            <Link href="/about">
+                <span className={pathname === "/about" ? "active" : ""}>About</span>
             </Link>
+            <style jsx>{`
+                nav {
+                    background-color : tomato;
+                }
+                span {
+                    text-decoration: none;
+                }
+                .active {
+                    color : yellow;
+                }
+            `}</style>
         </nav>
     );
 }
