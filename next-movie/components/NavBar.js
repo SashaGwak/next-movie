@@ -14,15 +14,9 @@ export default function NavBar() {
             <Link href="/about">
                 <span className={pathname === "/about" ? "active" : ""}>About</span>
             </Link>
-            <style jsx>{`
-                nav {
-                    background-color : tomato;
-                }
-                span {
-                    text-decoration: none;
-                }
+            <style jsx global>{`
                 .active {
-                    color : yellow;
+                    color : red;
                 }
             `}</style>
         </nav>
