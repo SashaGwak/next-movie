@@ -1,24 +1,11 @@
-import { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 
-export default function Home() {
-    const [movies, setMovies] = useState([]);
-
-    useEffect(() => {
-        (async () => {
-            const { results } = await ( 
-                // rewrites를 통해 api 숨김
-                await fetch(`/api/movies`)
-            ).json();
-            setMovies(results);
-        })(); // IIFE
-    }, []);
-
+export default function Home({results}) {
     return (
         <div className="container">
             <Seo title="Home"/>
-            {!movies && <h4>Loading...</h4>}
-            {movies?.map((movie) => (
+            {!results && <h4>Loading...</h4>}
+            {results?.map((movie) => (
                  <div className="movie" key={movie.id}>
                     <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
                     <h4>{movie.original_title}</h4>
@@ -37,6 +24,9 @@ export default function Home() {
                 transition: transform 0.2s ease-in-out;
                 box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
                 }
+                .movie{
+                    cursor: pointer;
+                }
                 .movie:hover img {
                 transform: scale(1.05) translateY(-10px);
                 }
@@ -47,4 +37,17 @@ export default function Home() {
             `}</style>
         </div>
     );
+}
+
+// server 선행
+export async function getServerSideProps() {
+
+    const { results } = await(await fetch(`http://localhost:3000/api/movies`)).json();
+    return {
+        props: {
+            results, // 요 result를 위에서 받아줌
+            // 무엇을 return하던지 props로서 Page에게 주게됨 
+            // _app.js에서 사용하는 pageProps에서 받는 정보 
+        }
+    }
 }
