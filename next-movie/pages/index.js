@@ -4,34 +4,15 @@ import { useRouter } from 'next/navigation';
 
 export default function Home({results}) {
     const router = useRouter(); 
-    // router를 이용하는 방법 1  
-    // const onClick = (id, title) => {
-    //     router.push(
-    //       {
-    //         pathname: `/movies/${id}`,
-    //         query: {
-    //           title,
-    //         },
-    //       },
-    //       `/movies/${id}`
-    //     );
-    //   };
+    const onClick = (id, title) => {
+        router.push(`/movies/${title}/${id}`);
+      };
     return (
         <div className="container">
             <Seo title="Home"/>
             {!results && <h4>Loading...</h4>}
             {results?.map((movie) => (
-                // <div onClick={() => onClick(movie.id, movie.original_title)}className="movie" key={movie.id}></div> 방법 1으로 요런식으로 덮어서 사용가능
-
-                // Link를 사용하는 방법 2
-                <Link href={{
-                        pathname: `/movies/${movie.id}`, 
-                        query : {
-                            title : movie.original_title
-                        }, 
-                    }} 
-                    as={`/movies/${movie.id}`}>  
-                    {/* as를 통해 query masking 처리 가능 */}
+                <Link href={`/movies/${movie.original_title}/${movie.id}`} key={movie.id}>  
                     <div className="movie">
                         <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
                         <h4>{movie.original_title}</h4>
